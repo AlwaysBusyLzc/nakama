@@ -261,18 +261,26 @@ message Friend {
 }
 
 message TFriendAdd {
+  message UserIds {
+    repeated bytes user_ids = 1;
+  }
+
+  message Handles {
+    repeated string handles = 1;
+  }
+
   oneof set {
-    bytes user_id = 1;
-    string handle = 2;
+    UserIds user_id = 1;
+    Handles handle = 2;
   }
 }
 
 message TFriendRemove {
-  bytes user_id = 1;
+  repeated bytes user_id = 1;
 }
 
 message TFriendBlock {
-  bytes user_id = 1;
+  repeated bytes user_id = 1;
 }
 
 message TFriendsList {}
@@ -296,29 +304,36 @@ message Group {
 }
 
 message TGroupCreate {
-  string name = 1;
-  string description = 2;
-  string avatar_url = 3;
-  string lang = 4;
-  bytes metadata = 5;
-  bool private = 6;
+  message GroupCreate {
+    string name = 1;
+    string description = 2;
+    string avatar_url = 3;
+    string lang = 4;
+    bytes metadata = 5;
+    bool private = 6;
+  }
+  repeated GroupCreate groupCreate = 1;
 }
 message TGroup {
   Group group = 1;
 }
 
 message TGroupUpdate {
-  bytes group_id = 1;
-  bool private = 2;
-  string name = 3;
-  string description = 4;
-  string avatar_url = 5;
-  string lang = 6;
-  bytes metadata = 7;
+  message GroupUpdate {
+    bytes group_id = 1;
+    bool private = 2;
+    string name = 3;
+    string description = 4;
+    string avatar_url = 5;
+    string lang = 6;
+    bytes metadata = 7;
+  }
+
+  repeated GroupUpdate groupUpdate = 1;
 }
 
 message TGroupRemove {
-  bytes group_id = 1;
+  repeated bytes group_id = 1;
 }
 
 message TGroupsSelfList {}
@@ -364,26 +379,36 @@ message TGroupUsers {
 }
 
 message TGroupJoin {
-  bytes group_id = 1;
+  repeated bytes group_id = 1;
 }
 
 message TGroupLeave {
-  bytes group_id = 1;
+  repeated bytes group_id = 1;
 }
 
 message TGroupUserAdd {
-  bytes group_id = 1;
-  bytes user_id = 2;
+  message GroupUserAdd {
+    bytes group_id = 1;
+    bytes user_id = 2;
+  }
+
+  repeated GroupUserAdd groupUserAdd = 1;
 }
 
 message TGroupUserKick {
-  bytes group_id = 1;
-  bytes user_id = 2;
+  message GroupUserKick {
+    bytes group_id = 1;
+    bytes user_id = 2;
+  }
+  repeated GroupUserKick groupUserKick = 1;
 }
 
 message TGroupUserPromote {
-  bytes group_id = 1;
-  bytes user_id = 2;
+  message GroupUserPromote {
+    bytes group_id = 1;
+    bytes user_id = 2;
+  }
+  repeated GroupUserPromote groupUserPromote = 1;
 }
 
 message TopicId {
@@ -401,32 +426,53 @@ message UserPresence {
 }
 
 message TTopicJoin {
+  message UserId {
+    repeated bytes user_id = 1;
+  }
+  message Room {
+    repeated bytes room = 1;
+  }
+  message GroupId {
+    repeated bytes group_id = 1;
+  }
+
   oneof id {
-    bytes user_id = 1;
-    bytes room = 2;
-    bytes group_id = 3;
+    UserId user_id = 1;
+    Room room = 2;
+    GroupId group_id = 3;
   }
 }
 message TTopic {
-  TopicId topic = 1;
-  repeated UserPresence presences = 2;
-  UserPresence self = 3;
+  message Topic {
+    TopicId topic = 1;
+    repeated UserPresence presences = 2;
+    UserPresence self = 3;
+  }
+
+  repeated Topic topics = 1;
 }
 
 message TTopicLeave {
-  TopicId topic = 1;
+  repeated TopicId topic = 1;
 }
 
 message TTopicMessageSend {
-  TopicId topic = 1;
-  bytes data = 2;
+  message TopicMessageSend {
+    TopicId topic = 1;
+    bytes data = 2;
+  }
+  repeated TopicMessageSend topicMessageSend = 1;
 }
 
 message TTopicMessageAck {
-  bytes message_id = 1;
-  int64 created_at = 2;
-  int64 expires_at = 3;
-  string handle = 4;
+  message TopicMessageAck {
+    bytes message_id = 1;
+    int64 created_at = 2;
+    int64 expires_at = 3;
+    string handle = 4;
+  }
+
+  repeated TopicMessageAck topicMessageAck = 1;
 }
 
 message TopicMessage {
@@ -468,7 +514,7 @@ message TMatchmakeTicket {
   bytes ticket = 1;
 }
 message TMatchmakeRemove {
-  bytes ticket = 1;
+  repeated bytes ticket = 1;
 }
 
 message MatchmakeMatched {
@@ -480,33 +526,52 @@ message MatchmakeMatched {
 
 message TMatchCreate {}
 message TMatchJoin {
+  message MatchId {
+    repeated bytes match_id = 1;
+  }
+  message Token {
+    repeated bytes token = 2;
+  }
+
   oneof id {
-    bytes match_id = 1;
-    bytes token = 2;
+    MatchId match_id = 1;
+    Token token = 2;
   }
 }
 message TMatch {
-  bytes match_id = 1;
-  repeated UserPresence presences = 2;
-  UserPresence self = 3;
+  message Match {
+    bytes match_id = 1;
+    repeated UserPresence presences = 2;
+    UserPresence self = 3;
+  }
+
+  repeated Match matches = 1;
 }
 
 message MatchDataSend {
-  bytes match_id = 1;
-  int64 op_code = 2;
-  bytes data = 3;
-  repeated UserPresence presences = 4;
+  message Data {
+    bytes match_id = 1;
+    int64 op_code = 2;
+    bytes data = 3;
+    repeated UserPresence presences = 4;
+  }
+
+  repeated Data matchData = 1;
 }
 
 message MatchData {
-  bytes match_id = 1;
-  UserPresence presence = 2;
-  int64 op_code = 3;
-  bytes data = 4;
+  message Data {
+    bytes match_id = 1;
+    UserPresence presence = 2;
+    int64 op_code = 3;
+    bytes data = 4;
+  }
+
+  repeated Data data = 1;
 }
 
 message TMatchLeave {
-  bytes match_id = 1;
+  repeated bytes match_id = 1;
 }
 
 message MatchPresence {
@@ -665,6 +730,10 @@ message TLeaderboardRecords {
 }
 
 message TRpc {
-  string id = 1;
-  bytes payload = 2;
+  message Rpc {
+    string id = 1;
+    bytes payload = 2;
+  }
+
+  repeated Rpc rpc = 1;
 }
