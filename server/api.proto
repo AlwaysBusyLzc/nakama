@@ -206,7 +206,6 @@ message Envelope {
     TLeaderboardRecordsFetch leaderboard_records_fetch = 55;
     TLeaderboardRecordsList leaderboard_records_list = 56;
     TLeaderboards leaderboards = 57;
-    TLeaderboardRecord leaderboard_record = 58;
     TLeaderboardRecords leaderboard_records = 59;
 
     TMatchmakeAdd matchmake_add = 60;
@@ -425,7 +424,7 @@ message TGroupsLeave {
 }
 
 message TGroupUsersAdd {
-  message GroupUserAdd {
+  message GroupUsersAdd {
     bytes group_id = 1;
     bytes user_id = 2;
   }
